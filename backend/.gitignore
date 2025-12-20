@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.env
+.env.*
+!.env.example
+pyvenv.cfg
+.pytest_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Frontend
+frontend/dist/
+frontend/.env
+frontend/.env.*
+!.env.example
+
+# Backend
+backend/instance/
+backend/.env
+backend/.env.*
+backend/.env.supabase
+backend/app.py.backup
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Secrets
+*.pem
+*.key
+*.crt
+*.p12
+
+# Database
+*.db
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
+
+# Deployment
+render.yaml

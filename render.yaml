@@ -1,32 +1,32 @@
 services:
-  # Backend API
+  # Backend API (Flask)
   - type: web
-    name: agency-platform-api
+    name: biketi-backend
     env: python
-    buildCommand: cd backend && pip install -r requirements.txt
-    startCommand: cd backend && gunicorn -c gunicorn_config.py app:app
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -c gunicorn_config.py app:app
     envVars:
-      - key: SECRET_KEY
-        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: FLASK_ENV
+        value: production
+      - key: FRONTEND_URL
+        value: https://biketi-frontend.onrender.com
+      # These must be set in Render dashboard manually:
       - key: DATABASE_URL
-        fromDatabase:
-          name: agency-db
-          property: connectionString
+        sync: false
+      - key: SECRET_KEY
+        sync: false
       - key: CORS_ORIGINS
-        value: https://agency-platform.onrender.com
+        sync: false
 
-  # Frontend
-  - type: web
-    name: agency-platform-frontend
-    env: node
-    buildCommand: cd frontend && npm install && npm run build
-    startCommand: cd frontend && npm run preview
+  # Frontend (React/Vite) - Static Site
+  - type: static
+    name: biketi-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
     envVars:
       - key: VITE_API_URL
-        value: https://agency-platform-api.onrender.com/api/v1
-    staticPublishPath: ./frontend/dist
-
-cat > backend/.env.production << 'EOF'
-SECRET_KEY=your-production-secret-key-change-this
-FLASK_ENV=production
-CORS_ORIGINS=https://agency-platform-frontend.onrender.com
+        value: https://biketi-backend.onrender.com
