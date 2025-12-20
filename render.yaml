@@ -3,6 +3,7 @@ services:
   - type: web
     name: biketi-backend
     env: python
+    plan: free  # ← ADD THIS LINE
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn -c gunicorn_config.py app:app
@@ -21,10 +22,11 @@ services:
       - key: CORS_ORIGINS
         sync: false
 
-  # Frontend (React/Vite) - Static Site (CORRECTED SYNTAX)
+  # Frontend (React/Vite) - Static Site
   - type: web
     name: biketi-frontend
     env: static
+    plan: free  # ← ADD THIS LINE
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
