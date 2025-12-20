@@ -21,12 +21,13 @@ services:
       - key: CORS_ORIGINS
         sync: false
 
-  # Frontend (React/Vite) - Static Site
-  - type: static
+  # Frontend (React/Vite) - Static Site (CORRECTED SYNTAX)
+  - type: web
     name: biketi-frontend
+    env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
         value: https://biketi-backend.onrender.com
