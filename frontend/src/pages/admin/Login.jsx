@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = () => {
+const AdminLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -28,7 +28,7 @@ const Login = () => {
         localStorage.setItem('admin_user', JSON.stringify(response.data.user));
         
         // Redirect to admin dashboard
-        navigate('/admin');
+        navigate('/admin/dashboard');
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed. Please try again.');
@@ -132,4 +132,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;
