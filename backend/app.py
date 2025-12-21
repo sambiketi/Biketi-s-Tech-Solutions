@@ -35,6 +35,13 @@ CORS(app, resources={r"/*": {"origins": origins}})
 
 # Database setup - Supabase compatible
 DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///agency.db')
+# Force psycopg v3 for PostgreSQL (Python 3.13 compatible)
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgresql://",
+        "postgresql+psycopg://",
+        1
+    )
 
 # Add SSL mode for Supabase PostgreSQL
 if DATABASE_URL and 'supabase.co' in DATABASE_URL:
