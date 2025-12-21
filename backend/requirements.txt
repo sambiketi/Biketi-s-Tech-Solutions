@@ -1,7 +1,7 @@
 Flask==2.3.3
 flask-cors==4.0.0
 SQLAlchemy==1.4.52
-psycopg[binary]==3.1.19
+psycopg[binary]==3.3.2  # Updated to 3.3.2
 python-dotenv==1.0.0
 PyJWT==2.8.0
 bcrypt==4.1.2
