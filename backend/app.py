@@ -43,21 +43,15 @@ if DATABASE_URL.startswith("postgresql://"):
         1
     )
 
-# Add SSL mode for Supabase PostgreSQL
-if DATABASE_URL and 'supabase.co' in DATABASE_URL:
-    # Add SSL requirement for Supabase
-    if '?' not in DATABASE_URL:
-        DATABASE_URL += '?sslmode=require'
-    else:
-        DATABASE_URL += '&sslmode=require'
-
 engine = create_engine(
     DATABASE_URL,
     pool_size=5,
     max_overflow=10,
-    pool_pre_ping=True,  # Verify connections before using
-    pool_recycle=300     # Recycle connections every 5 minutes
+    pool_pre_ping=True,
+    pool_recycle=300,
+    connect_args={"sslmode": "require"} if DATABASE_URL.startswith("postgresql+psycopg://") else {}
 )
+
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
