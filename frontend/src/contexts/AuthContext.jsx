@@ -12,13 +12,16 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('admin_token')
+    
     if (token) {
       const verify = async () => {
         try {
+          console.log('Verifying token:', token)
           const response = await adminApi.verifyToken(token)
           setUser(response.data.user)
           setError('')
         } catch (err) {
+          console.error('Token verification failed:', err)
           localStorage.removeItem('admin_token')
           setUser(null)
           setError('Session expired. Please login again.')
@@ -28,7 +31,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       verify().catch(err => {
-        console.error('Token verification failed', err)
+        console.error('Unexpected error verifying token:', err)
         setLoading(false)
       })
     } else {
@@ -70,7 +73,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   )
 }

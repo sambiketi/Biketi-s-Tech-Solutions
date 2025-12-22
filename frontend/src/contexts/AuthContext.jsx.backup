@@ -11,35 +11,38 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('admin_token')
     if (token) {
-      verifyToken(token)
+      const verify = async () => {
+        try {
+          const response = await adminApi.verifyToken(token)
+          setUser(response.data.user)
+          setError('')
+        } catch (err) {
+          localStorage.removeItem('admin_token')
+          setUser(null)
+          setError('Session expired. Please login again.')
+        } finally {
+          setLoading(false)
+        }
+      }
+
+      verify().catch(err => {
+        console.error('Token verification failed', err)
+        setLoading(false)
+      })
     } else {
       setLoading(false)
     }
   }, [])
-
-  const verifyToken = async (token) => {
-    try {
-      const response = await adminApi.verifyToken()
-      setUser(response.data.user)
-      setError('')
-    } catch (err) {
-      localStorage.removeItem('token')
-      setUser(null)
-      setError('Session expired. Please login again.')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const login = async (username, password) => {
     setError('')
     try {
       const response = await adminApi.login(username, password)
       const { token, user } = response.data
-      
-      localStorage.setItem('token', token)
+
+      localStorage.setItem('admin_token', token)
       setUser(user)
       return { success: true, user }
     } catch (err) {
@@ -50,7 +53,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logout = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('admin_token')
     setUser(null)
     window.location.href = '/admin/login'
   }
